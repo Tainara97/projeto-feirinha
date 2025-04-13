@@ -35,6 +35,25 @@ app.get("/items/:id", (req, res) => {
     res.send(item)
 })
 
+app.post("/items", (req, res) => {
+    const item = req.body;
+    if (!item.name || !item.quantity || !item.type) {
+        return res.status(422).send("Você precisa preencher todas as informações!")
+    } 
+    
+    const itemExistente = lista.find(i => i.name.toLowerCase() === item.name.toLowerCase()) 
+
+   if (itemExistente) {
+        return res.status(409).send("Esse item já foi adicionado!")
+    }
+
+    lista.push({
+        id: lista.length + 1,
+        ...item
+    })
+    res.status(201).send("Item adicionado com sucesso!")
+})
+
 
 app.listen(5000, () => {
     console.log("rodando")
