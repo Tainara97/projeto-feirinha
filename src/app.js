@@ -20,6 +20,22 @@ app.get("/items", (req, res) => {
     res.send(lista);
 });
 
+app.get("/items/:id", (req, res) => {
+    const id = Number(req.params.id);
+
+    if (isNaN(id) || id <= 0 ) {
+        return res.status(400).send("ID inválido!");
+    } 
+
+    const item = lista.find(item => item.id === id);
+    
+    if (!item) {
+        return res.status(404).send("Item não encontrado!")
+    }
+    res.send(item)
+})
+
+
 app.listen(5000, () => {
     console.log("rodando")
 });
